@@ -1056,11 +1056,14 @@ class PlayState extends MusicBeatState
 		];
 
 		// HOLDS, check for sustain notes
-		if (holdArray.contains(true) && /*!boyfriend.stunned && */ generatedMusic)
+		if (holdArray.contains(true) && generatedMusic || botplay && generatedMusic)
 		{
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.isSustainNote && daNote.canBeHit && daNote.mustPress && holdArray[daNote.noteData])
+				if (daNote.isSustainNote && daNote.canBeHit && daNote.mustPress && holdArray[daNote.noteData] && holdArray.contains(true) && generatedMusic && !botplay)
+					goodNoteHit(daNote);
+
+				if (botplay && generatedMusic && daNote.canBeHit)
 					goodNoteHit(daNote);
 			});
 		}
