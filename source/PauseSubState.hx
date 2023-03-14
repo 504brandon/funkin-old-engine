@@ -29,12 +29,7 @@ class PauseSubState extends FlxSubState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		if (FlxG.keys.justPressed.J)
-		{
-			PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
-		}
-
+		
 		if (FlxG.keys.justPressed.ENTER)
 			close();
 	}

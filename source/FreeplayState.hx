@@ -39,27 +39,9 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.playMusic('assets/music/freakyMenu' + TitleState.soundExt);
 		}
 
-		var daListSongs:Array<String> = Assets.getText('assets/data/freeplaySongList.txt').trim().split('\n');
+		songs = CoolUtil.loadText('assets/data/freeplaySongList.txt');
 
-		for (i in 0...daListSongs.length)
-		{
-			daListSongs[i] = daListSongs[i].trim().toLowerCase();
-
-			songs = daListSongs;
-		}
-
-		trace(songs);
-
-		var daListColors:Array<String> = Assets.getText('assets/data/freeplayColorList.txt').trim().split('\n');
-
-		for (i in 0...daListColors.length)
-		{
-			daListColors[i] = daListColors[i].trim().toLowerCase();
-
-			songColors = daListColors;
-		}
-
-		trace(songColors);
+		songColors = CoolUtil.loadText('assets/data/freeplayColorList.txt');
 
 		// LOAD MUSIC
 

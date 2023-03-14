@@ -1,5 +1,6 @@
 package;
 
+import openfl.Assets;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
@@ -25,7 +26,9 @@ class Note extends FlxSprite
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
+	public var noteType:String;
+
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?noteType:String)
 	{
 		super();
 
@@ -40,7 +43,15 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		var tex = FlxAtlasFrames.fromSparrow('assets/images/NOTE_assets.png', 'assets/images/NOTE_assets.xml');
+		this.noteType = noteType;
+
+		var tex;
+
+		if (Assets.exists('assets/images/$noteType.png') && Assets.exists('assets/images/$noteType.xml'))
+			tex = FlxAtlasFrames.fromSparrow('assets/images/$noteType.png', 'assets/images/$noteType.xml');
+		else
+			tex = FlxAtlasFrames.fromSparrow('assets/images/NOTE_assets.png', 'assets/images/NOTE_assets.xml');
+
 		frames = tex;
 		animation.addByPrefix('greenScroll', 'green0');
 		animation.addByPrefix('redScroll', 'red0');

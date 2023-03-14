@@ -1,6 +1,9 @@
 package;
 
+#if sys
 import sys.FileSystem;
+#end
+
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -49,6 +52,8 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 		FlxG.save.bind('funkinold', '504brandon');
 		Highscore.load();
+
+		options.OptionsConfigs.loadOptions();
 
 		#if sys
 		polymod.Polymod.init({
