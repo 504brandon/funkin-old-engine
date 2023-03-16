@@ -13,14 +13,15 @@ class OptionsMain extends MusicBeatState
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	#if windows
+	#if sys
     var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Erase All Data'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Erase All Data'];
+	var apperenceOptions:Array<String> = ['Opponent strums glow beta', 'FrameRate'];
 	#else
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
+	var apperenceOptions:Array<String> = ['Opponent strums glow beta'];
 	#end
-    var apperenceOptions:Array<String> = ['Opponent strums glow beta'];
     var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping'];
 	var curSelected:Int = 0;
 
@@ -96,7 +97,7 @@ class OptionsMain extends MusicBeatState
                         menuItems = gameplayOptions;
                         regenMenu();
                     }
-				#if windows
+				#if sys
 				case 'Erase All Data':
 					detailsText.text = 'Erases all of your save data. WARNING THIS IS UNDOABLE!!!';
 
@@ -106,6 +107,32 @@ class OptionsMain extends MusicBeatState
 						FlxG.game.stage.window.alert('all data has been wiped');
 						FlxG.resetState();
 					}
+				case 'FrameRate':
+					detailsText.text = 'Baisically how fast your game goes. ${OptionsConfigs.fps}';
+
+					if (controls.LEFT_P) {
+						OptionsConfigs.fps -= 5;
+
+						if (FlxG.keys.pressed.SHIFT)
+							OptionsConfigs.fps -= 5;
+
+						OptionsConfigs.saveOptions();
+					}
+
+					if (controls.RIGHT_P) {
+						OptionsConfigs.fps += 5;
+
+						if (FlxG.keys.pressed.SHIFT)
+							OptionsConfigs.fps += 5;
+
+						OptionsConfigs.saveOptions();
+					}
+
+					if (OptionsConfigs.fps < 10)
+						OptionsConfigs.fps = 10;
+
+					if (OptionsConfigs.fps > 999)
+						OptionsConfigs.fps = 999;
 				#end
                 case 'Botplay':
                     detailsText.text = 'I mean what do you expect it plays the game for you. ${OptionsConfigs.botplay}';

@@ -114,7 +114,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.LEFT_P)
 			changeDiff(-1);
-		if (controls.RIGHT_P)
+		if (controls.RIGHT_P && !FlxG.keys.pressed.SHIFT)
 			changeDiff(1);
 
 		if (controls.BACK)
