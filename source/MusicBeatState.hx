@@ -1,9 +1,7 @@
 package;
 
 import flixel.FlxG;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
-import flixel.util.FlxTimer;
 
 class MusicBeatState extends FlxUIState
 {
@@ -37,6 +35,10 @@ class MusicBeatState extends FlxUIState
 		curBeat = Math.round(curStep / 4);
 
 		super.update(elapsed);
+
+		#if sys
+		FlxG.drawFramerate = options.OptionsConfigs.fps;
+		#end
 	}
 
 	/**

@@ -8,12 +8,19 @@ class OptionsConfigs
 	public static var ghostTapping:Bool = true;
     public static var dadGlow:Bool = false;
 	public static var iconAnimed:Bool = true;
+	#if sys
+	public static var fps:Int = 100;
+	#end
 
 	public static function saveOptions() {
 		FlxG.save.data.bot = botplay;
 		FlxG.save.data.ghost = ghostTapping;
         FlxG.save.data.opglow = dadGlow;
 		FlxG.save.data.animIcon = iconAnimed;
+		#if sys
+		FlxG.save.data.areyoulowquality = fps;
+		#end
+
         FlxG.save.flush();
 	}
 
@@ -26,6 +33,11 @@ class OptionsConfigs
             dadGlow = FlxG.save.data.opglow;
 		if (FlxG.save.data.animIcon)
             iconAnimed = FlxG.save.data.animIcon;
+		#if sys
+		if (FlxG.save.data.areyoulowquality)
+			fps = FlxG.save.data.areyoulowquality;
+		#end
+
         FlxG.save.flush();
 	}
 }
