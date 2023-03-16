@@ -82,8 +82,6 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(wackyIntros);
 
-		// DEBUG BULLSHIT
-
 		super.create();
 
 		if (FlxG.save.data.weekUnlocked != null)
@@ -93,12 +91,7 @@ class TitleState extends MusicBeatState
 			if (StoryMenuState.weekUnlocked.length < 3)
 				StoryMenuState.weekUnlocked.insert(0, true);
 		}
-
-		#if SKIP_TO_PLAYSTATE
-		FlxG.switchState(new StoryMenuState());
-		#else
 		startIntro();
-		#end
 	}
 
 	var logoBl:FlxSprite;

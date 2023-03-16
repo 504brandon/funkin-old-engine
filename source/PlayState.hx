@@ -367,7 +367,6 @@ class PlayState extends MusicBeatState
 			}
 
 			swagCounter += 1;
-			// generateSong('fresh');
 		}, 5);
 	}
 
@@ -390,8 +389,6 @@ class PlayState extends MusicBeatState
 
 	private function generateSong(dataPath:String):Void
 	{
-		// FlxG.log.add(ChartParser.parse());
-
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
@@ -657,15 +654,37 @@ class PlayState extends MusicBeatState
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
-		if (healthBar.percent < 20)
-			iconP1.animation.curAnim.curFrame = 1;
-		else
-			iconP1.animation.curAnim.curFrame = 0;
+		if (!openfl.Assets.exists('assets/images/icons/icon-${iconP1.char}.xml')){
+			if (healthBar.percent < 20){
+				iconP1.animation.curAnim.curFrame = 1;
+				if (iconP2.width > 300)
+				iconP2.animation.curAnim.curFrame = 2;
+		}
+	}
 
-		if (healthBar.percent > 80)
-			iconP2.animation.curAnim.curFrame = 1;
-		else
-			iconP2.animation.curAnim.curFrame = 0;
+		if (!openfl.Assets.exists('assets/images/icons/icon-${iconP2.char}.xml')){
+			if (healthBar.percent > 80)
+				iconP2.animation.curAnim.curFrame = 1;
+			else
+				iconP2.animation.curAnim.curFrame = 0;
+		}
+
+				if (healthBar.percent < 20){
+					if (iconP2.width > 300)
+						iconP2.animation.curAnim.curFrame = 2;
+
+					iconP1.animation.curAnim.curFrame = 1;
+				}
+				else if (healthBar.percent > 80){
+					if (iconP1.width > 300)
+						iconP1.animation.curAnim.curFrame = 2;
+
+					iconP2.animation.curAnim.curFrame = 1;
+				}
+				else{
+					iconP1.animation.curAnim.curFrame = 0;
+					iconP2.animation.curAnim.curFrame = 0;
+			}
 
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */

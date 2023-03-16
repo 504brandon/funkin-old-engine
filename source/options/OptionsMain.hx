@@ -20,7 +20,7 @@ class OptionsMain extends MusicBeatState
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
 	#end
-    var apperenceOptions:Array<String> = ['Opponent strums glow beta'];
+    var apperenceOptions:Array<String> = ['Opponent strums glow beta', 'Animated Icons'];
     var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping'];
 	var curSelected:Int = 0;
 
@@ -122,8 +122,13 @@ class OptionsMain extends MusicBeatState
 
                     if (FlxG.keys.justPressed.ENTER)
                         OptionsConfigs.dadGlow = !OptionsConfigs.dadGlow;
+				case 'Animated Icons':
+					detailsText.text = 'Icons that are animated like hypno are not animated. ${OptionsConfigs.iconAnimed}';
 
-            if (FlxG.keys.justPressed.ENTER)
+                    if (FlxG.keys.justPressed.ENTER)
+						OptionsConfigs.iconAnimed = !OptionsConfigs.iconAnimed;
+
+            if (FlxG.keys.justPressed.ENTER && daSelected != 'Erase All Data')
                 OptionsConfigs.saveOptions();
 		}
 
