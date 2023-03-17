@@ -11,6 +11,7 @@ class OptionsConfigs
 	#if sys
 	public static var fps:Int = 100;
 	#end
+	public static var fc:Bool = false;
 
 	public static function saveOptions() {
 		FlxG.save.data.bot = botplay;
@@ -20,6 +21,7 @@ class OptionsConfigs
 		#if sys
 		FlxG.save.data.areyoulowquality = fps;
 		#end
+		FlxG.save.data.fc = fc;
 
         FlxG.save.flush();
 	}
@@ -29,14 +31,16 @@ class OptionsConfigs
 		    botplay = FlxG.save.data.bot;
         if (FlxG.save.data.ghost != null)
 		    ghostTapping = FlxG.save.data.ghost;
-        if (FlxG.save.data.opglow)
+        if (FlxG.save.data.opglow != null)
             dadGlow = FlxG.save.data.opglow;
-		if (FlxG.save.data.animIcon)
+		if (FlxG.save.data.animIcon != null)
             iconAnimed = FlxG.save.data.animIcon;
 		#if sys
 		if (FlxG.save.data.areyoulowquality)
 			fps = FlxG.save.data.areyoulowquality;
 		#end
+		if (FlxG.save.data.fc != null)
+			fc = FlxG.save.data.fc;
 
         FlxG.save.flush();
 	}

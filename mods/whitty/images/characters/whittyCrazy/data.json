@@ -1,0 +1,11 @@
+{
+    "hpIcon": "characters/whittyCrazy/icons",
+    "Img": "WhittyCrazy",
+    "idleAnim": "Whitty idle dance",
+    "upAnim": "Whitty Sing Note UP",
+    "downAnim": "Whitty Sing Note DOWN",
+    "leftAnim": "Whitty Sing Note LEFT",
+    "rightAnim": "whitty sing note right",
+    "offsetFile": "whit",
+    "context": "the code sucks but this is the base of the char system"
+}

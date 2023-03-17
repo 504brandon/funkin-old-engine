@@ -1,7 +1,27 @@
 package;
 
+import flixel.util.FlxColor;
+import flixel.FlxG;
+import openfl.Assets;
+import haxe.Json;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+
+using StringTools;
+
+typedef CharJson =
+{
+	var Img:String;
+
+	var idleAnim:String;
+	var upAnim:String;
+	var downAnim:String;
+	var leftAnim:String;
+	var rightAnim:String;
+	var offsetFile:String;
+	var hpColor:String;
+	var hpIcon:String;
+}
 
 class Character extends FlxSprite
 {
@@ -11,6 +31,10 @@ class Character extends FlxSprite
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
 	public var specialAnim = false;
+
+	public var hpColor:FlxColor = FlxColor.RED;
+	public var char:CharJson;
+	public var healthIcon:String;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -54,22 +78,8 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 
-			case 'dad':
-				// DAD ANIMATION LOADING CODE
-				tex = FlxAtlasFrames.fromSparrow('assets/images/DADDY_DEAREST.png', 'assets/images/DADDY_DEAREST.xml');
-				frames = tex;
-				animation.addByPrefix('idle', 'Dad idle dance', 24);
-				animation.addByPrefix('singUP', 'Dad Sing Note UP', 24);
-				animation.addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24);
-				animation.addByPrefix('singDOWN', 'Dad Sing Note DOWN', 24);
-				animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24);
-				playAnim('idle');
+				healthIcon = 'icons/icon-gf';
 
-				addOffset('idle');
-				addOffset("singUP", -6, 50);
-				addOffset("singRIGHT", 0, 27);
-				addOffset("singLEFT", -10, 10);
-				addOffset("singDOWN", 0, -30);
 			case 'spooky':
 				tex = FlxAtlasFrames.fromSparrow('assets/images/spooky_kids_assets.png', 'assets/images/spooky_kids_assets.xml');
 				frames = tex;
@@ -89,6 +99,8 @@ class Character extends FlxSprite
 				addOffset("singDOWN", -50, -130);
 
 				playAnim('danceRight');
+
+				healthIcon = 'icons/icon-spooky';
 			case 'monster':
 				tex = FlxAtlasFrames.fromSparrow('assets/images/Monster_Assets.png', 'assets/images/Monster_Assets.xml');
 				frames = tex;
@@ -104,7 +116,88 @@ class Character extends FlxSprite
 				addOffset("singLEFT", -30);
 				addOffset("singDOWN", -30, -40);
 				playAnim('idle');
+
+				healthIcon = 'icons/icon-monster';
+			case 'bf':
+				var tex = FlxAtlasFrames.fromSparrow('assets/images/BOYFRIEND.png', 'assets/images/BOYFRIEND.xml');
+				frames = tex;
+				animation.addByPrefix('idle', 'BF idle dance', 24, false);
+				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
+				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
+				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+				animation.addByPrefix('hey', 'BF HEY', 24, false);
+
+				animation.addByPrefix('firstDeath', "BF dies", 24, false);
+				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
+				animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
+
+				animation.addByPrefix('scared', 'BF idle shaking', 24);
+				playAnim('idle');
+
+				antialiasing = true;
+
+				addOffset('idle', -5);
+				addOffset("singUP", -29, 27);
+				addOffset("singRIGHT", -38, -7);
+				addOffset("singLEFT", 12, -6);
+				addOffset("singDOWN", -10, -50);
+				addOffset("singUPmiss", -29, 27);
+				addOffset("singRIGHTmiss", -30, 21);
+				addOffset("singLEFTmiss", 12, 24);
+				addOffset("singDOWNmiss", -11, -19);
+				addOffset("hey", 7, 4);
+				addOffset('firstDeath', 37, 11);
+				addOffset('deathLoop', 37, 5);
+				addOffset('deathConfirm', 37, 69);
+				addOffset('scared', -4);
+			default:
+				if (Assets.exists('assets/images/characters/$curCharacter/data.json'))
+				{
+					char = loadCharFromJson('data', curCharacter);
+
+					tex = FlxAtlasFrames.fromSparrow('assets/images/characters/$curCharacter/${char.Img}.png', 'assets/images/characters/$curCharacter/${char.Img}.xml');
+					frames = tex;
+					animation.addByPrefix('idle', char.idleAnim, 24);
+					animation.addByPrefix('singUP', char.upAnim, 24);
+					animation.addByPrefix('singRIGHT', char.rightAnim, 24);
+					animation.addByPrefix('singDOWN', char.downAnim, 24);
+					animation.addByPrefix('singLEFT', char.leftAnim, 24);
+					playAnim('idle');
+
+					if (char.hpColor != null)
+						hpColor = FlxColor.fromString(char.hpColor);
+					
+					if (Assets.exists('assets/images/characters/$curCharacter/${char.offsetFile}.txt'))
+						loadOffsetFile(char.offsetFile);
+
+					healthIcon = char.hpIcon;
+				}
+				else
+				{
+					tex = FlxAtlasFrames.fromSparrow('assets/images/DADDY_DEAREST.png', 'assets/images/DADDY_DEAREST.xml');
+					frames = tex;
+					animation.addByPrefix('idle', 'Dad idle dance', 24);
+					animation.addByPrefix('singUP', 'Dad Sing Note UP', 24);
+					animation.addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24);
+					animation.addByPrefix('singDOWN', 'Dad Sing Note DOWN', 24);
+					animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24);
+					playAnim('idle');
+
+					addOffset('idle');
+					addOffset("singUP", -6, 50);
+					addOffset("singRIGHT", 0, 27);
+					addOffset("singLEFT", -10, 10);
+					addOffset("singDOWN", 0, -30);
+				}
 		}
+
+		if (healthIcon == null)
+			healthIcon = 'icons/icon-$curCharacter';
 	}
 
 	private var danced:Bool = false;
@@ -147,5 +240,29 @@ class Character extends FlxSprite
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
 	{
 		animOffsets[name] = [x, y];
+	}
+
+	public static function loadCharFromJson(jsonInput:String, ?folder:String):CharJson
+	{
+		var rawJson = Assets.getText('assets/images/characters/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json').trim();
+
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		var swagShit:CharJson = cast Json.parse(rawJson);
+		return swagShit;
+	}
+
+	private function loadOffsetFile(offsetCharacter:String)
+	{
+		var daFile:Array<String> = CoolUtil.loadText('assets/images/characters/$curCharacter/$offsetCharacter.txt');
+
+		for (i in daFile)
+		{
+			var splitWords:Array<String> = i.split(" ");
+			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
+		}
 	}
 }

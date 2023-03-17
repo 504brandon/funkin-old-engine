@@ -28,31 +28,28 @@ class HealthIcon extends FlxSprite
 		scrollFactor.set();
 	}
 
-	public function changeIcon(newChar:String):Void
+	public function changeIcon(path:String):Void
 	{
-		if (newChar != 'bf-pixel' && newChar != 'bf-old')
-			newChar = newChar.split('-')[0].trim();
-
-		if (newChar != char)
+		if (path != char)
 		{
-			if (animation.getByName(newChar) == null)
+			if (animation.getByName(path) == null)
 			{
-                if (Assets.exists('assets/images/icons/icon-$newChar.png'))
-				    loadGraphic('assets/images/icons/icon-$newChar.png', true, 150, 150);
+                if (Assets.exists('assets/images/$path.png'))
+				    loadGraphic('assets/images/$path.png', true, 150, 150);
                 else
-                    loadGraphic('assets/images/icons/icon-face.png', true, 150, 150);
+                    loadGraphic('assets/images/face.png', true, 150, 150);
 			}
 
-			if (Assets.exists('assets/images/icons/icon-$newChar.png') && Assets.exists('assets/images/icons/icon-$newChar.xml'))
-				frames = FlxAtlasFrames.fromSparrow('assets/images/icons/icon-$newChar.png', 'assets/images/icons/icon-$newChar.xml');
+			if (Assets.exists('assets/images/$path.png') && Assets.exists('assets/images/$path.xml'))
+				frames = FlxAtlasFrames.fromSparrow('assets/images/$path.png', 'assets/images/$path.xml');
 
-			if (Assets.exists('assets/images/icons/icon-$newChar.xml'))
-				iconData = CoolUtil.loadText('assets/images/icons/icon-$newChar.txt');
+			if (Assets.exists('assets/images/$path.xml'))
+				iconData = CoolUtil.loadText('assets/images/$path.txt');
 
-			if (!Assets.exists('assets/images/icons/icon-$newChar.xml')){
-				animation.add(newChar, [0, 1], 0, false, isPlayer);
+			if (!Assets.exists('assets/images/$path.xml')){
+				animation.add(path, [0, 1], 0, false, isPlayer);
 
-				animation.play(newChar);
+				animation.play(path);
 			}else{
 				if (options.OptionsConfigs.iconAnimed)
 					animation.addByPrefix(iconData[0], iconData[0], Std.parseInt(iconData[1]));
@@ -61,7 +58,7 @@ class HealthIcon extends FlxSprite
 
 				animation.play(iconData[0], true);
 			}
-			char = newChar;
+			char = path;
 		}
 	}
 

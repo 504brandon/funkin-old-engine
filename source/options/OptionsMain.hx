@@ -14,8 +14,8 @@ class OptionsMain extends MusicBeatState
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	#if sys
-    var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Erase All Data'];
-	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Erase All Data'];
+    var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
+	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
 	var apperenceOptions:Array<String> = ['Opponent strums glow beta', 'FrameRate'];
 	#else
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
@@ -23,6 +23,7 @@ class OptionsMain extends MusicBeatState
 	var apperenceOptions:Array<String> = ['Opponent strums glow beta'];
 	#end
     var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping'];
+	var modifierOptions:Array<String> = ['Fc Mode', 'Health drain'];
 	var curSelected:Int = 0;
 
     var detailsText:FlxText;
@@ -97,6 +98,14 @@ class OptionsMain extends MusicBeatState
                         menuItems = gameplayOptions;
                         regenMenu();
                     }
+
+				case 'Modifiers':
+					detailsText.text = '';
+
+                    if (FlxG.keys.justPressed.ENTER){
+                        menuItems = modifierOptions;
+                        regenMenu();
+                    }
 				#if sys
 				case 'Erase All Data':
 					detailsText.text = 'Erases all of your save data. WARNING THIS IS UNDOABLE!!!';
@@ -131,8 +140,8 @@ class OptionsMain extends MusicBeatState
 					if (OptionsConfigs.fps < 10)
 						OptionsConfigs.fps = 10;
 
-					if (OptionsConfigs.fps > 999)
-						OptionsConfigs.fps = 999;
+					if (OptionsConfigs.fps > 500)
+						OptionsConfigs.fps = 500;
 				#end
                 case 'Botplay':
                     detailsText.text = 'I mean what do you expect it plays the game for you. ${OptionsConfigs.botplay}';
@@ -154,13 +163,18 @@ class OptionsMain extends MusicBeatState
 
                     if (FlxG.keys.justPressed.ENTER)
 						OptionsConfigs.iconAnimed = !OptionsConfigs.iconAnimed;
+				case 'Fc Mode':
+					detailsText.text = 'Dont get a miss or you die of death. ${OptionsConfigs.fc}';
 
-            if (FlxG.keys.justPressed.ENTER && daSelected != 'Erase All Data')
-                OptionsConfigs.saveOptions();
+					if (FlxG.keys.justPressed.ENTER)
+						OptionsConfigs.fc = !OptionsConfigs.fc;
 		}
 
+		if (FlxG.keys.justPressed.ENTER && daSelected != 'Erase All Data')
+			OptionsConfigs.saveOptions();
+
         if (FlxG.keys.justPressed.ESCAPE){
-            if (menuItems == gameplayOptions || menuItems == apperenceOptions){
+            if (menuItems == gameplayOptions || menuItems == apperenceOptions || menuItems == modifierOptions){
                 menuItems = menuItemsTemp;
                 regenMenu();
             }

@@ -16,14 +16,6 @@ class PauseSubState extends FlxSubState
 		bg.alpha = 0.6;
 		bg.scrollFactor.set();
 		add(bg);
-
-		var bf:Boyfriend = new Boyfriend(x, y);
-		bf.scrollFactor.set();
-		// add(bf);
-
-		bf.playAnim('firstDeath');
-
-		bg.cameras = [FlxG.cameras.list[1]];
 	}
 
 	override function update(elapsed:Float)

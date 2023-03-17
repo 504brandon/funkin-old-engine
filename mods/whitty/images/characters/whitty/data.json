@@ -1,0 +1,12 @@
+{
+    "hpIcon": "characters/whitty/icons",
+    "Img": "WhittySprites",
+    "idleAnim": "Idle",
+    "upAnim": "Sing Up",
+    "downAnim": "Sing Down",
+    "leftAnim": "Sing Left",
+    "rightAnim": "Sing Right",
+    "offsetFile": "whit",
+    "hpColor": "0xFF1D1E35",
+    "context": "the code sucks but this is the base of the char system"
+}

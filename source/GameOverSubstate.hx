@@ -14,13 +14,13 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	// var
 
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float, char:String)
 	{
 		super();
 
 		Conductor.songPosition = 0;
 
-		bf = new Boyfriend(x, y);
+		bf = new Boyfriend(x, y, char);
 		add(bf);
 
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
