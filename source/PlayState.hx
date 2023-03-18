@@ -90,8 +90,20 @@ class PlayState extends MusicBeatState
 
 	var songPositionBar:Float;
 
+	#if sys
+	var script:HScriptPooger;
+	#end
+
 	override public function create()
 	{
+		#if sys
+		script = new HScriptPooger('assets/data/${SONG.song.toLowerCase()}/script');
+		if (!script.isBlank && script.expr != null) {
+			script.interp.scriptObject = this;
+			script.interp.execute(script.expr);
+		}
+		script.callFunction('create');
+		#end
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -310,12 +322,16 @@ class PlayState extends MusicBeatState
 		camHUD.alpha = 0;
 
 		FlxTween.tween(camHUD, {alpha: 1}, 0.6);
+
+		#if sys
+		script.callFunction('createPost');
+		#end
 	}
 
 	var startTimer:FlxTimer;
 
 	function startCountdown():Void
-	{
+	{		
 		generateStaticArrows(0);
 		generateStaticArrows(1);
 
@@ -325,6 +341,10 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition -= Conductor.crochet * 5;
 
 		var swagCounter:Int = 0;
+
+		#if sys
+		script.callFunction('startCountdown', [swagCounter]);
+		#end
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
@@ -388,6 +408,10 @@ class PlayState extends MusicBeatState
 
 	function startSong():Void
 	{
+		#if sys
+		script.callFunction('startSong');
+		#end
+
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
@@ -395,8 +419,6 @@ class PlayState extends MusicBeatState
 		FlxG.sound.playMusic("assets/songs/" + SONG.song.toLowerCase() + "/Inst" + TitleState.soundExt, 1, false);
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
-
-		trace(FlxG.sound.music.length);
 
 		timeBar.setRange(0, FlxG.sound.music.length - 1000);
 		timeBar.numDivisions = 1000;
@@ -612,6 +634,10 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		#if sys
+		script.callFunction('update', [elapsed]);
+		#end
+
 		super.update(elapsed);
 
 		songPositionBar = Conductor.songPosition + 10;
@@ -688,7 +714,7 @@ class PlayState extends MusicBeatState
 			iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 			iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
-			if (!openfl.Assets.exists('assets/images/icons/icon-${iconP1.char}.xml'))
+			if (!openfl.Assets.exists('assets/images/${iconP1.char}.xml'))
 			{
 				if (healthBar.percent < 20)
 				{
@@ -698,7 +724,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			if (!openfl.Assets.exists('assets/images/icons/icon-${iconP2.char}.xml'))
+			if (!openfl.Assets.exists('assets/images/${iconP2.char}.xml'))
 			{
 				if (healthBar.percent > 80)
 					iconP2.animation.curAnim.curFrame = 1;
@@ -894,6 +920,10 @@ class PlayState extends MusicBeatState
 						});
 					}
 
+					#if sys
+					script.callFunction('dadNoteHit', [daNote]);
+					#end			
+
 					if (SONG.needsVoices)
 						vocals.volume = 1;
 
@@ -922,10 +952,18 @@ class PlayState extends MusicBeatState
 		}
 
 		keyShit();
+
+		#if sys
+		script.callFunction('updatePost', [elapsed]);
+		#end
 	}
 
 	function endSong():Void
 	{
+		#if sys
+		script.callFunction('endSong');
+		#end
+
 		trace('SONG DONE' + isStoryMode);
 
 		if (isStoryMode)
@@ -975,6 +1013,10 @@ class PlayState extends MusicBeatState
 
 	private function popUpScore(strumtime:Float):Void
 	{
+		#if sys
+		script.callFunction('popUpScore', [strumtime]);
+		#end
+
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		vocals.volume = 1;
 
@@ -1089,7 +1131,9 @@ class PlayState extends MusicBeatState
 
 		curSection += 1;
 
-
+		#if sys
+		script.callFunction('popUpScore', [strumtime]);
+		#end
 	}
 
 	private function keyShit():Void
@@ -1199,6 +1243,10 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(direction:Int = 1):Void
 	{
+		#if sys
+		script.callFunction('noteMiss');
+		#end
+
 		if (!boyfriend.stunned)
 		{
 			health -= 0.06;
@@ -1289,6 +1337,10 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
+		#if sys
+		script.callFunction('bfNoteHit', [note]);
+		#end
+
 		if (!note.isSustainNote)
 		{
 			combo += 1;
@@ -1363,6 +1415,10 @@ class PlayState extends MusicBeatState
 
 	override function beatHit()
 	{
+		#if sys
+		script.callFunction('beatHit');
+		#end
+
 		super.beatHit();
 
 		if (generatedMusic)

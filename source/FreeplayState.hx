@@ -39,7 +39,7 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.playMusic('assets/music/freakyMenu' + TitleState.soundExt);
 		}
 
-		songs = CoolUtil.loadText('assets/data/freeplaySongList.txt');
+		songs = CoolUtil.loadTextLowercase('assets/data/freeplaySongList.txt');
 
 		songColors = CoolUtil.loadText('assets/data/freeplayColorList.txt');
 

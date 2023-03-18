@@ -41,7 +41,7 @@ class AnimationDebug extends FlxState
 		FlxG.sound.music.stop();
 
 		var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);
-		gridBG.scrollFactor.set(0.5, 0.5);
+		gridBG.scrollFactor.set();
 		add(gridBG);
 
 		if (daAnim.startsWith('bf'))
@@ -49,6 +49,13 @@ class AnimationDebug extends FlxState
 
 		if (isDad)
 		{
+			var dadG = new Character(0, 0, daAnim);
+			dadG.screenCenter();
+			dadG.debugMode = true;
+			dadG.alpha = 0.3;
+			dadG.color = FlxColor.BLACK;
+			add(dadG);
+
 			dad = new Character(0, 0, daAnim);
 			dad.screenCenter();
 			dad.debugMode = true;
@@ -58,6 +65,13 @@ class AnimationDebug extends FlxState
 		}
 		else
 		{
+			var bfG = new Boyfriend(0, 0, daAnim);
+			bfG.screenCenter();
+			bfG.debugMode = true;
+			bfG.alpha = 0.3;
+			bfG.color = FlxColor.BLACK;
+			add(bfG);
+
 			bf = new Boyfriend(0, 0, daAnim);
 			bf.screenCenter();
 			bf.debugMode = true;
@@ -222,7 +236,7 @@ class AnimationDebug extends FlxState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(saveString, daAnim + "Offsets.txt");
+			_file.save(saveString, "offsets.txt");
 		}
 	}
 

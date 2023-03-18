@@ -18,9 +18,9 @@ typedef CharJson =
 	var downAnim:String;
 	var leftAnim:String;
 	var rightAnim:String;
-	var offsetFile:String;
 	var hpColor:String;
 	var hpIcon:String;
+	var gfDance:Bool;
 }
 
 class Character extends FlxSprite
@@ -35,6 +35,8 @@ class Character extends FlxSprite
 	public var hpColor:FlxColor = FlxColor.RED;
 	public var char:CharJson;
 	public var healthIcon:String;
+
+	var gfDance:Bool;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -79,6 +81,8 @@ class Character extends FlxSprite
 				playAnim('danceRight');
 
 				healthIcon = 'icons/icon-gf';
+
+				gfDance = true;
 
 			case 'spooky':
 				tex = FlxAtlasFrames.fromSparrow('assets/images/spooky_kids_assets.png', 'assets/images/spooky_kids_assets.xml');
@@ -160,7 +164,8 @@ class Character extends FlxSprite
 				{
 					char = loadCharFromJson('data', curCharacter);
 
-					tex = FlxAtlasFrames.fromSparrow('assets/images/characters/$curCharacter/${char.Img}.png', 'assets/images/characters/$curCharacter/${char.Img}.xml');
+					tex = FlxAtlasFrames.fromSparrow('assets/images/characters/$curCharacter/${char.Img}.png',
+						'assets/images/characters/$curCharacter/${char.Img}.xml');
 					frames = tex;
 					animation.addByPrefix('idle', char.idleAnim, 24);
 					animation.addByPrefix('singUP', char.upAnim, 24);
@@ -171,9 +176,9 @@ class Character extends FlxSprite
 
 					if (char.hpColor != null)
 						hpColor = FlxColor.fromString(char.hpColor);
-					
-					if (Assets.exists('assets/images/characters/$curCharacter/${char.offsetFile}.txt'))
-						loadOffsetFile(char.offsetFile);
+
+					if (Assets.exists('assets/images/characters/$curCharacter/offsets.txt'))
+						loadOffsetFile('offsets');
 
 					healthIcon = char.hpIcon;
 				}
@@ -202,24 +207,19 @@ class Character extends FlxSprite
 
 	private var danced:Bool = false;
 
-	/**
-	 * FOR GF DANCING SHIT
-	 */
 	public function dance()
 	{
-		switch (curCharacter)
+		danced = !danced;
+
+		if (gfDance)
 		{
-			case 'gf', 'spooky':
-				danced = !danced;
-
-				if (danced)
-					playAnim('danceRight');
-				else
-					playAnim('danceLeft');
-
-			default:
-				playAnim('idle');
+			if (danced)
+				playAnim('danceRight');
+			else
+				playAnim('danceLeft');
 		}
+		else
+			playAnim('idle');
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, ?specialAnim:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
@@ -257,12 +257,14 @@ class Character extends FlxSprite
 
 	private function loadOffsetFile(offsetCharacter:String)
 	{
-		var daFile:Array<String> = CoolUtil.loadText('assets/images/characters/$curCharacter/$offsetCharacter.txt');
+		var daFile:Array<String> = CoolUtil.loadText('assets/images/characters/$curCharacter/offsets.txt');
 
 		for (i in daFile)
 		{
 			var splitWords:Array<String> = i.split(" ");
 			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
+
+			trace(splitWords);
 		}
 	}
 }
