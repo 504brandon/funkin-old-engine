@@ -36,7 +36,7 @@ class OptionsConfigs
 		if (FlxG.save.data.animIcon != null)
             iconAnimed = FlxG.save.data.animIcon;
 		#if sys
-		if (FlxG.save.data.areyoulowquality)
+		if (FlxG.save.data.areyoulowquality != null)
 			fps = FlxG.save.data.areyoulowquality;
 		#end
 		if (FlxG.save.data.fc != null)

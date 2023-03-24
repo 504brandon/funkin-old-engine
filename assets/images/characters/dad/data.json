@@ -1,9 +1,9 @@
 {
-    "hpIcon": "characters/dad/dad",
+    "hpIcon": "characters/dad/icon",
     "Img": "DADDY_DEAREST",
     "idleAnim": "Dad idle dance",
     "upAnim": "Dad Sing Note UP",
-    "downAmim": "Dad Sing Note DOWN",
+    "downAnim": "Dad Sing Note DOWN",
     "leftAnim": "Dad Sing Note LEFT",
     "rightAnim": "Dad Sing Note RIGHT",
     "hpColor": "0xFFAF66CE"

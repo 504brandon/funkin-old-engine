@@ -27,6 +27,8 @@ class FreeplayState extends MusicBeatState
 
 	var bg:FlxSprite;
 
+	var diffs:Array<String>;
+
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 
 	private var songColors:Array<String> = ['0xff9271fd'];
@@ -124,11 +126,8 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
-
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
-			PlayState.isStoryMode = false;
-			FlxG.switchState(new PlayState());
+			CoolUtil.loadSong(songs[curSelected], diffs[curDifficulty], 0, false);
+			
 			if (FlxG.sound.music != null)
 				FlxG.sound.music.stop();
 		}
@@ -139,21 +138,13 @@ class FreeplayState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = diffs.length - 1;
+		if (curDifficulty > diffs.length - 1)
 			curDifficulty = 0;
 
-		intendedScore = Highscore.getScore(songs[curSelected], curDifficulty);
+		intendedScore = Highscore.getScore(songs[curSelected], diffs[curDifficulty]);
 
-		switch (curDifficulty)
-		{
-			case 0:
-				diffText.text = "EASY";
-			case 1:
-				diffText.text = 'NORMAL';
-			case 2:
-				diffText.text = "HARD";
-		}
+		diffText.text = diffs[curDifficulty].toUpperCase();
 	}
 
 	function changeSelection(change:Int = 0)
@@ -162,6 +153,11 @@ class FreeplayState extends MusicBeatState
 
 		curSelected += change;
 
+		if (Assets.exists('assets/data/${songs[curSelected]}/diffs.txt'))
+			diffs = CoolUtil.loadTextLowercase('assets/data/${songs[curSelected]}/diffs.txt');
+		else
+			diffs = ['easy', 'normal', 'hard'];
+
 		if (curSelected < 0)
 			curSelected = songs.length - 1;
 		if (curSelected >= songs.length)
@@ -169,7 +165,7 @@ class FreeplayState extends MusicBeatState
 
 		FlxTween.color(bg, 0.7, FlxColor.fromString(precolor), FlxColor.fromString(songColors[curSelected]));
 
-		intendedScore = Highscore.getScore(songs[curSelected], curDifficulty);
+		intendedScore = Highscore.getScore(songs[curSelected], diffs[curDifficulty]);
 
 		var bullShit:Int = 0;
 

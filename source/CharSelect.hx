@@ -45,6 +45,7 @@ class CharSelect extends MusicBeatSubstate
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
+			songText.scrollFactor.set();
 			grpMenuShit.add(songText);
 		}
 

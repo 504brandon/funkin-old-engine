@@ -1,0 +1,12 @@
+{
+    "hpIcon": "characters/spooky/icon",
+    "Img": "spooky_kids_assets",
+    "gfDance": true,
+    "idleLeftAnim": "spooky idle left",
+    "idleRightAnim": "spooky idle right",
+    "upAnim": "spooky UP NOTE",
+    "downAnim": "spooky DOWN note",
+    "leftAnim": "note sing left",
+    "rightAnim": "spooky sing right",
+    "hpColor": "0xFFD57E00"
+}

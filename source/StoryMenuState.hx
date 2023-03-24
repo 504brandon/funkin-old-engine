@@ -23,6 +23,7 @@ class StoryMenuState extends MusicBeatState
 	public static var weekUnlocked:Array<Bool> = [true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [['dad', 'bf', 'gf'], ['dad', 'bf', 'gf'], ['spooky', 'bf', 'gf']];
+	var diffs = ['easy', 'normal', 'hard'];
 	var curWeek:Int = 0;
 
 	var txtTracklist:FlxText;
@@ -234,25 +235,14 @@ class StoryMenuState extends MusicBeatState
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
-			var diffic = "";
+			PlayState.storyDifficulty = diffs[curDifficulty];
 
-			switch (curDifficulty)
-			{
-				case 0:
-					diffic = '-easy';
-				case 2:
-					diffic = '-hard';
-			}
-
-			PlayState.storyDifficulty = curDifficulty;
-
-			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
-			PlayState.storyWeek = curWeek;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
+				CoolUtil.loadSong(PlayState.storyPlaylist[0].toLowerCase(), diffs[curDifficulty], curWeek, true);
+
 				if (FlxG.sound.music != null)
 					FlxG.sound.music.stop();
-				FlxG.switchState(new PlayState());
 			});
 		}
 	}
@@ -262,22 +252,21 @@ class StoryMenuState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = diffs.length - 1;
+		if (curDifficulty > diffs.length - 1)
 			curDifficulty = 0;
+
+		sprDifficulty.animation.play(diffs[curDifficulty]);
 
 		sprDifficulty.offset.x = 0;
 
-		switch (curDifficulty)
+		switch (sprDifficulty.animation.curAnim.name)
 		{
-			case 0:
-				sprDifficulty.animation.play('easy');
+			case 'easy':
 				sprDifficulty.offset.x = 20;
-			case 1:
-				sprDifficulty.animation.play('normal');
+			case 'normal':
 				sprDifficulty.offset.x = 70;
-			case 2:
-				sprDifficulty.animation.play('hard');
+			case 'hard':
 				sprDifficulty.offset.x = 20;
 		}
 
@@ -285,7 +274,7 @@ class StoryMenuState extends MusicBeatState
 
 		// USING THESE WEIRD VALUES SO THAT IT DOESNT FLOAT UP
 		sprDifficulty.y = leftArrow.y - 15;
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		intendedScore = Highscore.getWeekScore(curWeek, diffs[curDifficulty]);
 
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 	}
@@ -338,6 +327,6 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist.screenCenter(X);
 		txtTracklist.x -= FlxG.width * 0.35;
 
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		intendedScore = Highscore.getWeekScore(curWeek, diffs[curDifficulty]);
 	}
 }

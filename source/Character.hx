@@ -1,7 +1,6 @@
 package;
 
 import flixel.util.FlxColor;
-import flixel.FlxG;
 import openfl.Assets;
 import haxe.Json;
 import flixel.FlxSprite;
@@ -14,6 +13,8 @@ typedef CharJson =
 	var Img:String;
 
 	var idleAnim:String;
+	var idleLeftAnim:String;
+	var idleRightAnim:String;
 	var upAnim:String;
 	var downAnim:String;
 	var leftAnim:String;
@@ -21,6 +22,8 @@ typedef CharJson =
 	var hpColor:String;
 	var hpIcon:String;
 	var gfDance:Bool;
+	var flipX:Bool;
+	var flipY:Bool;
 }
 
 class Character extends FlxSprite
@@ -84,27 +87,6 @@ class Character extends FlxSprite
 
 				gfDance = true;
 
-			case 'spooky':
-				tex = FlxAtlasFrames.fromSparrow('assets/images/spooky_kids_assets.png', 'assets/images/spooky_kids_assets.xml');
-				frames = tex;
-				animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
-				animation.addByPrefix('singLEFT', 'note sing left', 24, false);
-				animation.addByPrefix('singRIGHT', 'spooky sing right', 24, false);
-				animation.addByIndices('danceLeft', 'spooky dance idle', [0, 2, 6], "", 12, false);
-				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
-
-				addOffset('danceLeft');
-				addOffset('danceRight');
-
-				addOffset("singUP", -20, 26);
-				addOffset("singRIGHT", -130, -14);
-				addOffset("singLEFT", 130, -10);
-				addOffset("singDOWN", -50, -130);
-
-				playAnim('danceRight');
-
-				healthIcon = 'icons/icon-spooky';
 			case 'monster':
 				tex = FlxAtlasFrames.fromSparrow('assets/images/Monster_Assets.png', 'assets/images/Monster_Assets.xml');
 				frames = tex;
@@ -167,12 +149,23 @@ class Character extends FlxSprite
 					tex = FlxAtlasFrames.fromSparrow('assets/images/characters/$curCharacter/${char.Img}.png',
 						'assets/images/characters/$curCharacter/${char.Img}.xml');
 					frames = tex;
+
+					if (char.gfDance) {
+						animation.addByPrefix('danceLeft', char.idleLeftAnim, 24);
+						animation.addByPrefix('danceRight', char.idleRightAnim, 24);
+					}
+					else
 					animation.addByPrefix('idle', char.idleAnim, 24);
+
 					animation.addByPrefix('singUP', char.upAnim, 24);
 					animation.addByPrefix('singRIGHT', char.rightAnim, 24);
 					animation.addByPrefix('singDOWN', char.downAnim, 24);
 					animation.addByPrefix('singLEFT', char.leftAnim, 24);
-					playAnim('idle');
+
+					if (!char.gfDance)
+						playAnim('idle');
+					else
+						playAnim('danceLeft');
 
 					if (char.hpColor != null)
 						hpColor = FlxColor.fromString(char.hpColor);
@@ -180,7 +173,12 @@ class Character extends FlxSprite
 					if (Assets.exists('assets/images/characters/$curCharacter/offsets.txt'))
 						loadOffsetFile('offsets');
 
+					gfDance = char.gfDance;
+
 					healthIcon = char.hpIcon;
+
+					flipX = char.flipX;
+					flipY = char.flipY;
 				}
 				else
 				{
@@ -209,17 +207,19 @@ class Character extends FlxSprite
 
 	public function dance()
 	{
-		danced = !danced;
+		if (!debugMode){
+			danced = !danced;
 
-		if (gfDance)
-		{
-			if (danced)
-				playAnim('danceRight');
+			if (gfDance)
+			{
+				if (danced)
+					playAnim('danceRight');
+				else
+					playAnim('danceLeft');
+			}
 			else
-				playAnim('danceLeft');
+				playAnim('idle');
 		}
-		else
-			playAnim('idle');
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, ?specialAnim:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
