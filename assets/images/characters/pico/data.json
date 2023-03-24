@@ -1,0 +1,12 @@
+{
+    "y": 300,
+    "hpIcon": "characters/pico/icon",
+    "Img": "Pico_FNF_assetss",
+    "flipX": true,
+    "idleAnim": "Pico Idle Dance",
+    "upAnim": "pico Up note0",
+    "downAnim": "Pico Down Note0",
+    "leftAnim": "Pico Note Right0",
+    "rightAnim": "Pico NOTE LEFT0",
+    "hpColor": "0xFFB7D855"
+}

@@ -13,7 +13,7 @@ class Boyfriend extends Character
 	public function new(x:Float, y:Float, char:String)
 	{
 		super(x, y);
-		curCharacter = char;
+		this.curCharacter = char;
 	}
 
 	override function update(elapsed:Float)

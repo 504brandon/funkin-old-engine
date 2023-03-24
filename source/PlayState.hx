@@ -202,25 +202,23 @@ class PlayState extends MusicBeatState
 		dad = new Character(100, 100, SONG.player2);
 		add(dad);
 
+		if (dad.isGfChar){
+			dad.setPosition(gf.x, gf.y);
+			gf.visible = false;
+		}
+
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
 		switch (SONG.player2)
 		{
-			case 'gf':
-				dad.setPosition(gf.x, gf.y);
-				gf.visible = false;
-				if (isStoryMode)
-				{
-					camPos.x += 600;
-					tweenCamIn();
-				}
 			case "spooky":
-				dad.y += 200;
 				camPos.y += 10;
 			case "monster":
 				dad.y += 100;
 			case 'dad':
 				camPos.x += 400;
+			case 'pico':
+				camPos.x += 600;
 		}
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -272,11 +270,6 @@ class PlayState extends MusicBeatState
 		if (!OptionsConfigs.fc)
 			add(healthBar);
 
-		if (isStoryMode)
-			add(doof);
-		else
-			startCountdown();
-
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -317,15 +310,25 @@ class PlayState extends MusicBeatState
 		timeBarBG.cameras = [camHUD];
 		timeText.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		
+		if (isStoryMode && storyWeek == 0 || storyWeek == 1)
+			add(doof);
+		else
+			startCountdown();
 
 		super.create();
 
 		camHUD.alpha = 0;
 
-		FlxTween.tween(camHUD, {alpha: 1}, 0.6);
+		FlxTween.tween(camHUD, {alpha: 1}, 1.3);
 
 		#if sys
 		script.callFunction('createPost');
+		#end
+
+		#if mobile
+		var mcontrols = new MobileControlsCool();
+		add(mcontrols);
 		#end
 	}
 
@@ -648,8 +651,11 @@ class PlayState extends MusicBeatState
 
 		if (OptionsConfigs.botplay)
 			scoreText.text = 'BOTPLAY';
-
+		else if (OptionsConfigs.fc)
+			scoreText.text = 'Score: $songScore - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
+		else
 		scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${CoolUtil.truncateFloat(health, 2)}% - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
+
 		scoreText.screenCenter(X);
 		scoreText.updateHitbox();
 

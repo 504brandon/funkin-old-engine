@@ -24,6 +24,9 @@ typedef CharJson =
 	var gfDance:Bool;
 	var flipX:Bool;
 	var flipY:Bool;
+	var x:Float;
+	var y:Float;
+	var isGfChar:Bool;
 }
 
 class Character extends FlxSprite
@@ -39,7 +42,8 @@ class Character extends FlxSprite
 	public var char:CharJson;
 	public var healthIcon:String;
 
-	var gfDance:Bool;
+	public var gfDance:Bool;
+	public var isGfChar:Bool;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -86,6 +90,7 @@ class Character extends FlxSprite
 				healthIcon = 'icons/icon-gf';
 
 				gfDance = true;
+				isGfChar = true;
 
 			case 'monster':
 				tex = FlxAtlasFrames.fromSparrow('assets/images/Monster_Assets.png', 'assets/images/Monster_Assets.xml');
@@ -179,6 +184,9 @@ class Character extends FlxSprite
 
 					flipX = char.flipX;
 					flipY = char.flipY;
+
+					this.y += char.y;
+					this.x += char.x;
 				}
 				else
 				{

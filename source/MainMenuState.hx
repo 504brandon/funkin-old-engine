@@ -25,6 +25,11 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		#if mobile
+		var mcontrols = new MobileControlsCool();
+		add(mcontrols);
+		#end
+
 		persistentUpdate = persistentDraw = true;
 
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic('assets/images/menuBG.png');
