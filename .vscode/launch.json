@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Windows (Debug)",
+      "type": "hxcpp",
+      "preLaunchTask": "Build Windows (Debug)",
+      "request": "launch",
+      "program": "${workspaceFolder}/export/debug/windows/bin/Funkin Old.exe"
+    },
+    {
+      "name": "Windows (Release)",
+      "type": "hxcpp",
+      "preLaunchTask": "Build Windows (Release)",
+      "request": "launch",
+      "program": "${workspaceFolder}/export/debug/windows/bin/Funkin Old.exe"
+    },
+    {
+      "name": "HTML5 (Debug)",
+      "request": "launch",
+      "preLaunchTask": "Build HTML5 (Debug)",
+      "type": "node-terminal",
+      "command": "npx live-server \"${workspaceFolder}/export/debug/html5/bin/\""
+    },
+    {
+      "name": "HTML5 (Release)",
+      "request": "launch",
+      "preLaunchTask": "Build HTML5 (Release)",
+      "type": "node-terminal",
+      "command": "npx live-server \"${workspaceFolder}/export/release/html5/bin/\""
+    },
+    {
+      "name": "Linux (Debug)",
+      "type": "hxcpp",
+      "preLaunchTask": "Build Linux (Debug)",
+      "request": "launch",
+      "program": "${workspaceFolder}/export/debug/linux/bin/Funkin Old"
+    },
+    {
+      "name": "Linux (Release)",
+      "type": "hxcpp",
+      "preLaunchTask": "Build Linux (Release)",
+      "request": "launch",
+      "program": "${workspaceFolder}/export/debug/linux/bin/Funkin Old"
+    },
+    {
+      "name": "Android (Debug)",
+      "type": "hxcpp",
+      "preLaunchTask": "Build Android (Debug)",
+      "request": "launch",
+      "program": "${workspaceFolder}/export/release/android/bin/app/build/outputs/apk/debug/Funkin Old.apk"
+    },
+    {
+      "name": "Android (Release)",
+      "type": "hxcpp",
+      "preLaunchTask": "Build Android (Release)",
+      "request": "launch",
+      "program": "${workspaceFolder}/export/release/android/bin/app/build/outputs/apk/release/Funkin Old.apk"
+    },
+  ],
+}
