@@ -663,7 +663,7 @@ class PlayState extends MusicBeatState {
 		else if (OptionsConfigs.fc)
 			scoreText.text = 'Score: $songScore - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
 		else
-			scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${CoolUtil.truncateFloat(health, 2)}% - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
+			scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${Math.round(health * 50)}% - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
 
 		scoreText.screenCenter(X);
 		scoreText.updateHitbox();
