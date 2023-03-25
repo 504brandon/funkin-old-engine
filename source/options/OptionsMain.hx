@@ -1,5 +1,9 @@
 package options;
 
+import handlers.MusicBeatState;
+import handlers.ui.Alphabet;
+import states.TitleState;
+import states.MainMenuState;
 #if sys
 import sys.FileSystem;
 #end
@@ -15,7 +19,13 @@ class OptionsMain extends MusicBeatState {
 	#if sys
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
-	var apperenceOptions:Array<String> = ['Downscroll', 'Middlescroll', 'Opponent strums glow beta', 'Dave and bambi bump', 'FrameRate'];
+	var apperenceOptions:Array<String> = [
+		'Downscroll',
+		'Middlescroll',
+		'Opponent Strums Glow BETA',
+		'Dave and Bambi Golden Apple Bump',
+		'FrameRate'
+	];
 	#else
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
@@ -139,11 +149,11 @@ class OptionsMain extends MusicBeatState {
 
 				if (FlxG.keys.justPressed.ENTER)
 					OptionsConfigs.middlescroll = !OptionsConfigs.middlescroll;
-				case 'Downscroll':
-					detailsText.text = 'Makes ui down idk. ${OptionsConfigs.downscroll}';
-	
-					if (FlxG.keys.justPressed.ENTER)
-						OptionsConfigs.downscroll = !OptionsConfigs.downscroll;
+			case 'Downscroll':
+				detailsText.text = 'Makes ui down idk. ${OptionsConfigs.downscroll}';
+
+				if (FlxG.keys.justPressed.ENTER)
+					OptionsConfigs.downscroll = !OptionsConfigs.downscroll;
 			case 'Dave and bambi bump':
 				detailsText.text = 'Makes the icon bump look dave&bambi. ${OptionsConfigs.dbicon}';
 
