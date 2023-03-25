@@ -84,9 +84,8 @@ class FreeplayState extends MusicBeatState
 		add(scoreText);
 
 		changeSelection();
+		changeDiff();
 
-		// FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
-		// FlxG.sound.music.fadeIn(2, 0, 0.8);
 		selector = new FlxText();
 
 		selector.size = 40;
@@ -168,9 +167,6 @@ class FreeplayState extends MusicBeatState
 			diffs = CoolUtil.loadTextLowercase('assets/data/${songs[curSelected]}/diffs.txt');
 		else
 			diffs = ['easy', 'normal', 'hard'];
-
-		if (!diffs.contains(diffText.text.toLowerCase()))
-			changeDiff();
 
 		if (curSelected < 0)
 			curSelected = songs.length - 1;

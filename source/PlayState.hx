@@ -109,6 +109,7 @@ class PlayState extends MusicBeatState {
 		}
 		script.callFunction('create');
 		#end
+
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
@@ -127,7 +128,7 @@ class PlayState extends MusicBeatState {
 		Conductor.changeBPM(SONG.bpm);
 
 		if (OptionsConfigs.downscroll)
-		SONG.speed = -SONG.speed;
+			SONG.speed = -SONG.speed;
 
 		switch (SONG.song.toLowerCase()) {
 			case 'tutorial':

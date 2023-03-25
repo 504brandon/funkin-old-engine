@@ -54,6 +54,7 @@ class TitleState extends MusicBeatState
 			options.OptionsConfigs.fps = 100;
 			options.OptionsConfigs.firstload = false;
 			options.OptionsConfigs.saveOptions();
+			FlxG.switchState(new NotifyFnfFlash());
 		}
 			
 
