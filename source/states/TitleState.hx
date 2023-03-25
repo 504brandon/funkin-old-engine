@@ -3,6 +3,7 @@ package states;
 import handlers.ui.Alphabet;
 import handlers.MusicBeatState;
 import extra.PlayerSettings;
+import extra.NotifyFnfFlash;
 import handlers.Highscore;
 import handlers.CoolUtil;
 import handlers.Conductor;
@@ -74,6 +75,7 @@ class TitleState extends MusicBeatState {
 			options.OptionsConfigs.fps = 100;
 			options.OptionsConfigs.firstload = false;
 			options.OptionsConfigs.saveOptions();
+			FlxG.switchState(new NotifyFnfFlash());
 		}
 
 		#if (!web)

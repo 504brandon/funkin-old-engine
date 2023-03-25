@@ -126,6 +126,7 @@ class PlayState extends MusicBeatState {
 		}
 		script.callFunction('create');
 		#end
+		
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
