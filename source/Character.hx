@@ -26,6 +26,8 @@ typedef CharJson =
 	var flipY:Bool;
 	var x:Float;
 	var y:Float;
+	var camX:Float;
+	var camY:Float;
 	var isGfChar:Bool;
 }
 
@@ -44,6 +46,9 @@ class Character extends FlxSprite
 
 	public var gfDance:Bool;
 	public var isGfChar:Bool;
+
+	public var camX:Float;
+	public var camY:Float;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -187,6 +192,9 @@ class Character extends FlxSprite
 
 					this.y += char.y;
 					this.x += char.x;
+					
+					this.camX = char.camX;
+					this.camY = char.camY;
 				}
 				else
 				{

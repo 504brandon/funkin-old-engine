@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flixel.FlxG;
 import openfl.Assets;
 
@@ -40,5 +41,36 @@ class CoolUtil {
 		PlayState.storyDifficulty = diff;
 		trace(poop);
 		FlxG.switchState(new PlayState());
+	}
+
+	public static function camLerpShit(lerp:Float):Float {
+		return lerp * (FlxG.elapsed / (1 / 60));
+	}
+
+	public static function coolLerp(a:Float, b:Float, ratio:Float):Float {
+		return FlxMath.lerp(a, b, camLerpShit(ratio));
+	}
+
+	public static function loadMods() {
+		#if sys
+		polymod.Polymod.init({
+			modRoot: "mods",
+			dirs: sys.FileSystem.readDirectory('./mods'),
+			errorCallback: (e) ->
+			{
+				trace(e.message);
+			},
+			frameworkParams: {
+				assetLibraryPaths: [
+					"songs" => "assets/songs",
+					"images" => "assets/images",
+					"data" => "assets/data",
+					"fonts" => "assets/fonts",
+					"sounds" => "assets/sounds",
+					"music" => "assets/music",
+				]
+			}
+		});
+		#end
 	}
 }

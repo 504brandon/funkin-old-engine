@@ -1,13 +1,7 @@
 package;
 
-#if sys
-import sys.FileSystem;
-#end
-
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
@@ -17,7 +11,6 @@ import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -55,26 +48,14 @@ class TitleState extends MusicBeatState
 
 		options.OptionsConfigs.loadOptions();
 
-		#if sys
-		polymod.Polymod.init({
-			modRoot: "mods",
-			dirs: FileSystem.readDirectory('./mods'),
-			errorCallback: (e) ->
-			{
-				trace(e.message);
-			},
-			frameworkParams: {
-				assetLibraryPaths: [
-					"songs" => "assets/songs",
-					"images" => "assets/images",
-					"data" => "assets/data",
-					"fonts" => "assets/fonts",
-					"sounds" => "assets/sounds",
-					"music" => "assets/music",
-				]
-			}
-		});
-		#end
+		CoolUtil.loadMods();
+
+		if (options.OptionsConfigs.firstload == true) {
+			options.OptionsConfigs.fps = 100;
+			options.OptionsConfigs.firstload = false;
+			options.OptionsConfigs.saveOptions();
+		}
+			
 
 		#if (!web)
 		TitleState.soundExt = '.ogg';

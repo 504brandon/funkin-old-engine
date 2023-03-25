@@ -1,5 +1,7 @@
 {
     "y": 200,
+    "camY": 10,
+    "camX": 210,
     "hpIcon": "characters/spooky/icon",
     "Img": "spooky_kids_assets",
     "gfDance": true,

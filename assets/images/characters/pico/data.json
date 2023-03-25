@@ -1,5 +1,6 @@
 {
     "y": 300,
+    "camX": -70,
     "hpIcon": "characters/pico/icon",
     "Img": "Pico_FNF_assetss",
     "flipX": true,

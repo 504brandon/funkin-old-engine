@@ -1,4 +1,6 @@
 {
+    "camX": 32,
+    "camY": -30,
     "hpIcon": "characters/dad/icon",
     "Img": "DADDY_DEAREST",
     "idleAnim": "Dad idle dance",

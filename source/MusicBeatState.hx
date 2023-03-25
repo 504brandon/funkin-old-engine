@@ -37,8 +37,7 @@ class MusicBeatState extends FlxUIState
 		super.update(elapsed);
 
 		#if sys
-		if (options.OptionsConfigs.fps < 500)
-			FlxG.drawFramerate = options.OptionsConfigs.fps;
+		FlxG.drawFramerate = options.OptionsConfigs.fps;
 		#end
 	}
 

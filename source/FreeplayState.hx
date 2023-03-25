@@ -35,6 +35,8 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		CoolUtil.loadMods();
+		
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
@@ -82,7 +84,6 @@ class FreeplayState extends MusicBeatState
 		add(scoreText);
 
 		changeSelection();
-		changeDiff();
 
 		// FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
@@ -94,9 +95,21 @@ class FreeplayState extends MusicBeatState
 		super.create();
 	}
 
+	var stupidTimer:Float = 0.0;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		stupidTimer += (1.0 / FPS.currentFPS);
+
+		if(stupidTimer > 1 / 60)
+			{
+				changeDaColor();
+			}
+
+		if (FlxG.mouse.wheel != 0)
+			changeSelection(-FlxG.mouse.wheel);
 
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
@@ -149,8 +162,6 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		var precolor = songColors[curSelected];
-
 		curSelected += change;
 
 		if (Assets.exists('assets/data/${songs[curSelected]}/diffs.txt'))
@@ -158,13 +169,14 @@ class FreeplayState extends MusicBeatState
 		else
 			diffs = ['easy', 'normal', 'hard'];
 
+		if (!diffs.contains(diffText.text.toLowerCase()))
+			changeDiff();
+
 		if (curSelected < 0)
 			curSelected = songs.length - 1;
 		if (curSelected >= songs.length)
 			curSelected = 0;
-
-		FlxTween.color(bg, 0.7, FlxColor.fromString(precolor), FlxColor.fromString(songColors[curSelected]));
-
+	
 		intendedScore = Highscore.getScore(songs[curSelected], diffs[curDifficulty]);
 
 		var bullShit:Int = 0;
@@ -182,4 +194,9 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 	}
+
+	function changeDaColor() {
+			if(songColors[curSelected] != null)
+				bg.color = FlxColor.interpolate(bg.color, FlxColor.fromString(songColors[curSelected]), 0.045);
+		}
 }

@@ -89,6 +89,7 @@ class ChartingState extends MusicBeatState {
 				needsVoices: false,
 				player1: 'bf',
 				player2: 'dad',
+				noBfCam: false,
 				sectionLengths: [],
 				speed: 1
 			};
