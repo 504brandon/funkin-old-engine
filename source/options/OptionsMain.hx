@@ -30,18 +30,30 @@ class OptionsMain extends MusicBeatState {
 		'Erase All Data'
 	];
 	var apperenceOptions:Array<String> = [
-		'Flashing Lights',
 		'Downscroll',
 		'Middlescroll',
-		'Opponent Strums Glow BETA',
-		'Dave and Bambi Golden Apple Bump',
+		'Opponent strums glow beta',
+		'Dave and bambi bump',
 		'Animated Icons',
 		'FrameRate'
 	];
 	#else
-	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
-	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
-	var apperenceOptions:Array<String> = ['Downscroll', 'Middlescroll', 'Opponent strums glow beta', 'Animated Icons', 'Dave and bambi bump', 'FrameRate'];
+	var menuItemsTemp:Array<String> = [
+		'Apperence', 
+		'GamePlay'
+	];
+	var menuItems:Array<String> = [
+		'Apperence',
+		'GamePlay'
+		];
+	var apperenceOptions:Array<String> = [
+		'Downscroll', 
+		'Middlescroll', 
+		'Opponent strums glow beta', 
+		'Animated Icons', 
+		'Dave and bambi bump', 
+		'FrameRate'
+	];
 	#end
 	var gameplayOptions:Array<String> = [
 		'BotPlay',
