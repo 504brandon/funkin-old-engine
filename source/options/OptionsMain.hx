@@ -1,5 +1,9 @@
 package options;
 
+import handlers.MusicBeatState;
+import handlers.ui.Alphabet;
+import states.TitleState;
+import states.MainMenuState;
 #if sys
 import sys.FileSystem;
 #end
@@ -13,16 +17,39 @@ class OptionsMain extends MusicBeatState {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	#if sys
-	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
-	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
-	var apperenceOptions:Array<String> = ['Downscroll', 'Middlescroll', 'Opponent strums glow beta', 'Dave and bambi bump', 'FrameRate'];
+	var menuItemsTemp:Array<String> = [
+		'Apperence',
+		'GamePlay',
+		'Modifiers',
+		'Erase All Data'
+	];
+	var menuItems:Array<String> = [
+		'Apperence',
+		'GamePlay',
+		'Modifiers',
+		'Erase All Data'
+	];
+	var apperenceOptions:Array<String> = [
+		'Flashing Lights',
+		'Downscroll',
+		'Middlescroll',
+		'Opponent Strums Glow BETA',
+		'Dave and Bambi Golden Apple Bump',
+		'FrameRate'
+	];
 	#else
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
 	var apperenceOptions:Array<String> = ['Opponent strums glow beta'];
 	#end
-	var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping'];
-	var modifierOptions:Array<String> = ['Fc Mode', 'Health drain'];
+	var gameplayOptions:Array<String> = [
+		'BotPlay',
+		'Ghost Tapping'
+	];
+	var modifierOptions:Array<String> = [
+		'FC Mode',
+		'Health Drain'
+	];
 	var curSelected:Int = 0;
 
 	var detailsText:FlxText;
@@ -134,22 +161,26 @@ class OptionsMain extends MusicBeatState {
 				if (OptionsConfigs.fps > 500)
 					OptionsConfigs.fps = 500;
 			#end
+			case 'Flashing Lights':
+				detailsText.text = 'if disabled, there wont be any flashing lights. ${OptionsConfigs.flashingLights}';
+
+				if (FlxG.keys.justPressed.ENTER)
+					OptionsConfigs.flashingLights = !OptionsConfigs.flashingLights;
 			case 'Middlescroll':
 				detailsText.text = 'Makes the arrows in the middle. ${OptionsConfigs.middlescroll}';
 
 				if (FlxG.keys.justPressed.ENTER)
 					OptionsConfigs.middlescroll = !OptionsConfigs.middlescroll;
-				case 'Downscroll':
-					detailsText.text = 'Makes ui down idk. ${OptionsConfigs.downscroll}';
-	
-					if (FlxG.keys.justPressed.ENTER)
-						OptionsConfigs.downscroll = !OptionsConfigs.downscroll;
+			case 'Downscroll':
+				detailsText.text = 'Makes ui down idk. ${OptionsConfigs.downscroll}';
+
+				if (FlxG.keys.justPressed.ENTER)
+					OptionsConfigs.downscroll = !OptionsConfigs.downscroll;
 			case 'Dave and bambi bump':
 				detailsText.text = 'Makes the icon bump look dave&bambi. ${OptionsConfigs.dbicon}';
 
 				if (FlxG.keys.justPressed.ENTER)
 					OptionsConfigs.dbicon = !OptionsConfigs.dbicon;
-
 			case 'Botplay':
 				detailsText.text = 'I mean what do you expect it plays the game for you. ${OptionsConfigs.botplay}';
 

@@ -16,8 +16,9 @@ class OptionsConfigs
 	public static var firstload:Bool = true;
 	public static var downscroll:Bool = false;
 	public static var middlescroll:Bool = false;
+	public static var flashingLights:Bool = true;
 
-	public static function verNum():String {
+	inline public static function verNum():String {
 		var ver:String;
 
 		ver = lime.app.Application.current.meta.get('version');
@@ -38,6 +39,7 @@ class OptionsConfigs
 		FlxG.save.data.firsttime = firstload;
 		FlxG.save.data.downscroll = downscroll;
 		FlxG.save.data.middlescroll = middlescroll;
+		FlxG.save.data.flashingLights = flashingLights;
 
         FlxG.save.flush();
 	}
@@ -64,6 +66,8 @@ class OptionsConfigs
 			downscroll = FlxG.save.data.downscroll;
 		if (FlxG.save.data.middlescroll != null)
 			middlescroll = FlxG.save.data.middlescroll;
+		if (FlxG.save.data.flashingLights != null)
+			flashingLights = FlxG.save.data.flashingLights;
 
         FlxG.save.flush();
 	}
