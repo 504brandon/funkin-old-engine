@@ -661,9 +661,6 @@ class PlayState extends MusicBeatState {
 		timeText.screenCenter(X);
 		timeText.updateHitbox();
 
-		// trace("SONG POS: " + Conductor.songPosition);
-		// FlxG.sound.music.pitch = 2;
-
 		if (FlxG.keys.justPressed.ENTER && startedCountdown) {
 			persistentUpdate = false;
 			persistentDraw = true;

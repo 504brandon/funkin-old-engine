@@ -15,11 +15,11 @@ class OptionsMain extends MusicBeatState {
 	#if sys
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
-	var apperenceOptions:Array<String> = ['Downscroll', 'Middlescroll', 'Opponent strums glow beta', 'Dave and bambi bump', 'FrameRate'];
+	var apperenceOptions:Array<String> = ['Downscroll', 'Middlescroll', 'Opponent strums glow beta', 'Animated Icons', 'Dave and bambi bump', 'FrameRate'];
 	#else
 	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
 	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
-	var apperenceOptions:Array<String> = ['Opponent strums glow beta'];
+	var apperenceOptions:Array<String> = ['Downscroll', 'Middlescroll', 'Opponent strums glow beta', 'Animated Icons', 'Dave and bambi bump', 'FrameRate'];
 	#end
 	var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping'];
 	var modifierOptions:Array<String> = ['Fc Mode', 'Health drain'];
