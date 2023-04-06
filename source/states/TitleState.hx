@@ -71,8 +71,14 @@ class TitleState extends MusicBeatState {
 
 		CoolUtil.loadMods();
 
+		#if linux
+		wackyIntros.push(['linux', 'user']);
+		#end
+
 		if (options.OptionsConfigs.firstload == true) {
+			#if (!web)
 			options.OptionsConfigs.fps = 100;
+			#end
 			options.OptionsConfigs.firstload = false;
 			options.OptionsConfigs.saveOptions();
 			FlxG.switchState(new NotifyFnfFlash());

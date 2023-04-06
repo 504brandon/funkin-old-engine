@@ -1,12 +1,10 @@
 package states;
 
+import handlers.ui.fps.FPS;
 import handlers.MusicBeatState;
 import handlers.ui.Alphabet;
 import handlers.CoolUtil;
 import handlers.Highscore;
-import handlers.ui.FPS;
-import flixel.util.FlxColorTransformUtil;
-import flixel.tweens.FlxTween;
 import openfl.Assets;
 import flixel.FlxG;
 import flixel.FlxSprite;

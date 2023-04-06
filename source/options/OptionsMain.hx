@@ -1,9 +1,9 @@
 package options;
 
+import debug.CharSelect;
 import handlers.MusicBeatState;
 import handlers.ui.Alphabet;
 import states.TitleState;
-import states.MainMenuState;
 #if sys
 import sys.FileSystem;
 #end
@@ -12,6 +12,7 @@ import flixel.text.FlxText;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import states.CharSkin;
 
 class OptionsMain extends MusicBeatState {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -21,12 +22,14 @@ class OptionsMain extends MusicBeatState {
 		'Apperence',
 		'GamePlay',
 		'Modifiers',
+		'Char Skins',
 		'Erase All Data'
 	];
 	var menuItems:Array<String> = [
 		'Apperence',
 		'GamePlay',
 		'Modifiers',
+		'Char Skins',
 		'Erase All Data'
 	];
 	var apperenceOptions:Array<String> = [
@@ -52,15 +55,14 @@ class OptionsMain extends MusicBeatState {
 		'Opponent strums glow beta', 
 		'Animated Icons', 
 		'Dave and bambi bump', 
-		'FrameRate'
 	];
 	#end
 	var gameplayOptions:Array<String> = [
-		'BotPlay',
+		'Botplay',
 		'Ghost Tapping'
 	];
 	var modifierOptions:Array<String> = [
-		'FC Mode',
+		'Fc Mode',
 		'Health Drain'
 	];
 	var curSelected:Int = 0;
@@ -137,6 +139,9 @@ class OptionsMain extends MusicBeatState {
 					menuItems = modifierOptions;
 					regenMenu();
 				}
+
+			case 'Char Skins':
+				FlxG.switchState(new CharSkin());
 			#if sys
 			case 'Erase All Data':
 				detailsText.text = 'Erases all of your save data. WARNING THIS IS UNDOABLE!!!';
@@ -229,7 +234,7 @@ class OptionsMain extends MusicBeatState {
 				menuItems = menuItemsTemp;
 				regenMenu();
 			} else
-				FlxG.switchState(new MainMenuState());
+				FlxG.switchState(new states.MainMenuState());
 		}
 
 		if (FlxG.keys.justPressed.J) {

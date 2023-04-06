@@ -96,7 +96,7 @@ class PlayState extends MusicBeatState {
 	var talking:Bool = true;
 	var songScore:Int = 0;
 	var songMisses:Int = 0;
-	var songAccuracy:Float = 0.00;
+	var songAccuracy:Float = 100;
 
 	public static var campaignScore:Int = 0;
 
@@ -111,7 +111,7 @@ class PlayState extends MusicBeatState {
 
 	var oldTime:String;
 
-	var missRateings:Array<String> = ['FC!!!', 'PRETTY GOOD!', 'Good', 'Ehh', 'Clear'];
+	var missRatings:Array<String> = ['FC!!!', 'PRETTY GOOD!', 'Good', 'Ehh', 'Clear'];
 
 	public static var blueBalled:Int = 0;
 
@@ -293,15 +293,15 @@ class PlayState extends MusicBeatState {
 		add(iconP2);
 
 		scoreText = new FlxText(0, 680);
-		scoreText.setFormat('assets/fonts/vcr.tff', 25, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK, false);
+		scoreText.setFormat('assets/fonts/vcr.ttf', 18, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK, false);
 		if (OptionsConfigs.downscroll)
 			scoreText.y = 95.2;
 		scoreText.screenCenter(X);
 		add(scoreText);
 
-		timeBarBG = new FlxSprite(0, 30).loadGraphic('assets/images/healthBar.png');
+		timeBarBG = new FlxSprite(0, 20).loadGraphic('assets/images/healthBar.png');
 		if (OptionsConfigs.downscroll)
-			timeBarBG.y = 687.4;
+			timeBarBG.y = 677.7;
 		timeBarBG.scale.set(0.5, 0.8);
 		timeBarBG.screenCenter(X);
 		timeBarBG.scrollFactor.set();
@@ -315,7 +315,7 @@ class PlayState extends MusicBeatState {
 		add(timeBar);
 
 		timeText = new FlxText(0, -3);
-		timeText.setFormat('assets/fonts/vcr.tff', 25, dad.hpColor, CENTER, OUTLINE, FlxColor.BLACK, false);
+		timeText.setFormat('assets/fonts/vcr.ttf', 23, dad.hpColor, CENTER, OUTLINE, FlxColor.BLACK, false);
 		if (OptionsConfigs.downscroll)
 			timeText.y = 654.1;
 		timeText.screenCenter(X);
@@ -349,7 +349,7 @@ class PlayState extends MusicBeatState {
 		#end
 
 		#if mobile
-		var mcontrols = new MobileControlsCool();
+		var mcontrols = new handlers.ui.MobileControlsCool();
 		add(mcontrols);
 		#end
 	}
@@ -646,25 +646,25 @@ class PlayState extends MusicBeatState {
 				health = -465;
 		}
 
-		var formatMissRateings:String;
+		var formatMissRatings:String;
 
 		if (songMisses == 0)
-			formatMissRateings = missRateings[0];
+			formatMissRatings = missRatings[0];
 		else if (songMisses > 0 && songMisses < 5)
-			formatMissRateings = missRateings[1];
+			formatMissRatings = missRatings[1];
 		else if (songMisses > 4 && songMisses < 10)
-			formatMissRateings = missRateings[2];
+			formatMissRatings = missRatings[2];
 		else if (songMisses > 9 && songMisses < 20)
-			formatMissRateings = missRateings[3];
+			formatMissRatings = missRatings[3];
 		else
-			formatMissRateings = missRateings[4];
+			formatMissRatings = missRatings[4];
 
 		if (OptionsConfigs.botplay)
 			scoreText.text = 'BOTPLAY';
 		else if (OptionsConfigs.fc)
-			scoreText.text = 'Score: $songScore - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
+			scoreText.text = 'Score: $songScore - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRatings';
 		else
-			scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${Math.round(health * 50)}% - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRateings';
+			scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${CoolUtil.truncateFloat(health * 50, 1)}% - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rating: $formatMissRatings';
 
 		scoreText.screenCenter(X);
 		scoreText.updateHitbox();
@@ -897,7 +897,7 @@ class PlayState extends MusicBeatState {
 					daNote.destroy();
 				}
 
-				daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * PlayState.SONG.speed));
+				daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * PlayState.SONG.speed) + OptionsConfigs.offset);
 
 				if (daNote.y < -daNote.height && daNote.canBeHit || OptionsConfigs.downscroll && daNote.y > strumLine.y + 80) {
 					noteMiss(daNote.noteData);
@@ -1059,7 +1059,6 @@ class PlayState extends MusicBeatState {
 		}
 
 		coolText.text = Std.string(seperatedScore);
-		// add(coolText);
 
 		FlxTween.tween(rating, {alpha: 0}, 0.2, {
 			startDelay: Conductor.crochet * 0.001
@@ -1080,6 +1079,14 @@ class PlayState extends MusicBeatState {
 		#if sys
 		script.callFunction('popUpScore', [strumtime]);
 		#end
+
+		var msText = new FlxText(876.7, 325.8, 0, 'MS: ${CoolUtil.truncateFloat(noteDiff, 2)}');
+		msText.setFormat('assets/fonts/vcr.ttf', 32, FlxColor.CYAN, null, OUTLINE, FlxColor.BLACK);
+		add(msText);
+
+		FlxTween.tween(msText, {alpha: 0}, 0.3, {onComplete: function(tween) {
+			msText.destroy();
+		}});
 	}
 
 	private function keyShit():Void {
@@ -1259,6 +1266,8 @@ class PlayState extends MusicBeatState {
 			popUpScore(note.strumTime, note);
 		}
 
+		accuracyChange(note.strumTime);
+
 		if (note.noteData >= 0)
 			health += 0.023;
 		else
@@ -1428,5 +1437,15 @@ class PlayState extends MusicBeatState {
 		}
 
 		super.closeSubState();
+	}
+
+	function accuracyChange(thingie:Float) {
+		songAccuracy += thingie;
+
+		if (songMisses > 0 && songAccuracy > 99)
+			songAccuracy = 99;
+		
+		if (songAccuracy > 100)
+			songAccuracy = 100;
 	}
 }

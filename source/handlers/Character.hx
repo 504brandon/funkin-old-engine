@@ -56,10 +56,72 @@ class Character extends FlxSprite {
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 
-		var tex:FlxAtlasFrames;
 		antialiasing = true;
 
-		switch (curCharacter) {
+		changeCharacter(character);
+
+		if (healthIcon == null)
+			healthIcon = 'icons/icon-$curCharacter';
+	}
+
+	private var danced:Bool = false;
+
+	public function dance() {
+		if (!debugMode) {
+			danced = !danced;
+
+			if (gfDance) {
+				if (danced)
+					playAnim('danceRight');
+				else
+					playAnim('danceLeft');
+			} else
+				playAnim('idle');
+		}
+	}
+
+	public function playAnim(AnimName:String, Force:Bool = false, ?specialAnim:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
+		this.specialAnim = specialAnim;
+		if (animation.exists(AnimName)) {
+			animation.play(AnimName, Force, Reversed, Frame);
+
+			var daOffset = animOffsets.get(animation.curAnim.name);
+			if (animOffsets.exists(animation.curAnim.name)) {
+				offset.set(daOffset[0], daOffset[1]);
+			}
+		}
+	}
+
+	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
+		animOffsets[name] = [x, y];
+	}
+
+	public static function loadCharFromJson(jsonInput:String, ?folder:String):CharJson {
+		var rawJson = Assets.getText('assets/images/characters/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json').trim();
+
+		while (!rawJson.endsWith("}")) {
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		var swagShit:CharJson = cast Json.parse(rawJson);
+		return swagShit;
+	}
+
+	private function loadOffsetFile(offsetCharacter:String) {
+		var daFile:Array<String> = CoolUtil.loadText('assets/images/characters/$curCharacter/offsets.txt');
+
+		for (i in daFile) {
+			var splitWords:Array<String> = i.split(" ");
+			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
+
+			trace(splitWords);
+		}
+	}
+
+	public function changeCharacter(Char:String) {
+		var tex:FlxAtlasFrames;
+
+		switch (Char) {
 			case 'gf':
 				// GIRLFRIEND CODE
 				tex = FlxAtlasFrames.fromSparrow('assets/images/GF_assets.png', 'assets/images/GF_assets.xml');
@@ -208,61 +270,5 @@ class Character extends FlxSprite {
 				}
 		}
 
-		if (healthIcon == null)
-			healthIcon = 'icons/icon-$curCharacter';
-	}
-
-	private var danced:Bool = false;
-
-	public function dance() {
-		if (!debugMode) {
-			danced = !danced;
-
-			if (gfDance) {
-				if (danced)
-					playAnim('danceRight');
-				else
-					playAnim('danceLeft');
-			} else
-				playAnim('idle');
-		}
-	}
-
-	public function playAnim(AnimName:String, Force:Bool = false, ?specialAnim:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
-		this.specialAnim = specialAnim;
-		if (animation.exists(AnimName)) {
-			animation.play(AnimName, Force, Reversed, Frame);
-
-			var daOffset = animOffsets.get(animation.curAnim.name);
-			if (animOffsets.exists(animation.curAnim.name)) {
-				offset.set(daOffset[0], daOffset[1]);
-			}
-		}
-	}
-
-	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
-		animOffsets[name] = [x, y];
-	}
-
-	public static function loadCharFromJson(jsonInput:String, ?folder:String):CharJson {
-		var rawJson = Assets.getText('assets/images/characters/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json').trim();
-
-		while (!rawJson.endsWith("}")) {
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
-
-		var swagShit:CharJson = cast Json.parse(rawJson);
-		return swagShit;
-	}
-
-	private function loadOffsetFile(offsetCharacter:String) {
-		var daFile:Array<String> = CoolUtil.loadText('assets/images/characters/$curCharacter/offsets.txt');
-
-		for (i in daFile) {
-			var splitWords:Array<String> = i.split(" ");
-			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
-
-			trace(splitWords);
-		}
 	}
 }

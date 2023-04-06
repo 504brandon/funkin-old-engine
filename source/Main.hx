@@ -4,7 +4,7 @@ import flixel.FlxGame;
 import openfl.display.Sprite;
 import states.TitleState;
 #if !mobile
-import handlers.ui.FPS;
+import handlers.ui.fps.FPS;
 #end
 
 class Main extends Sprite {

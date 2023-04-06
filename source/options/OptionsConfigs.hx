@@ -4,6 +4,8 @@ import flixel.FlxG;
 
 class OptionsConfigs
 {
+	public static var offset:Int = 0;
+
 	public static var botplay:Bool = false;
 	public static var ghostTapping:Bool = true;
     public static var dadGlow:Bool = false;

@@ -25,7 +25,7 @@ class MainMenuState extends MusicBeatState {
 
 	override function create() {
 		#if mobile
-		var mcontrols = new MobileControlsCool();
+		var mcontrols = new handlers.ui.MobileControlsCool();
 		add(mcontrols);
 		#end
 

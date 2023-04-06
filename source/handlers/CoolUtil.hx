@@ -37,11 +37,15 @@ class CoolUtil {
 
 	public static function loadSong(song:String, diff:String, week:Int, isStory:Bool) {
 		var poop:String = Highscore.formatSong(song.toLowerCase(), diff);
-		PlayState.SONG = Song.loadFromJson(poop, song.toLowerCase());
-		PlayState.isStoryMode = isStory;
-		PlayState.storyDifficulty = diff;
-		trace(poop);
-		FlxG.switchState(new PlayState());
+		if (Assets.exists('assets/data/$song/$poop.json')){
+			PlayState.SONG = Song.loadFromJson(poop, song.toLowerCase());
+			PlayState.isStoryMode = isStory;
+			PlayState.storyDifficulty = diff;
+			trace(poop);
+			FlxG.switchState(new PlayState());
+		}else{
+			FlxG.game.stage.window.alert('hey your song aint found');
+		}
 	}
 
 	public static function camLerpShit(lerp:Float):Float {

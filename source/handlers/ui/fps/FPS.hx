@@ -1,5 +1,7 @@
-package handlers.ui;
+package handlers.ui.fps;
 
+import handlers.ui.fps.fabric.engine.Utilities;
+import handlers.ui.fps.memory.Memory;
 import options.OptionsConfigs;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -67,7 +69,7 @@ class FPS extends TextField {
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
 
 		if (currentCount != cacheCount /*&& visible*/) {
-			text = "FPS: " + currentFPS + "\nv: " + OptionsConfigs.verNum();
+			text = "FPS: " + currentFPS + '\n${Utilities.format_bytes(Memory.getCurrentUsage())} / ${Utilities.format_bytes(Memory.getPeakUsage())}' + "\nV: " + OptionsConfigs.verNum();
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();

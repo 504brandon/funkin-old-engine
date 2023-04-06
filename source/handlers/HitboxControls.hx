@@ -1,5 +1,5 @@
 // creds to luckydog7
-package debug;
+package handlers;
 
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;

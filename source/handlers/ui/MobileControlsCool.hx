@@ -2,7 +2,6 @@
 package handlers.ui;
 
 import flixel.ui.FlxVirtualPad;
-import HitboxControls.Hitbox;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.util.FlxSignal;
@@ -13,7 +12,6 @@ import flixel.input.FlxInput.FlxInputState;
 import flixel.ui.FlxButton;
 import flixel.input.actions.FlxActionInputDigital.FlxActionInputDigitalIFlxInput;
 import flixel.input.actions.FlxAction.FlxActionDigital;
-import Controls.Control;
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup;
 
