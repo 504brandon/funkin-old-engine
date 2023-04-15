@@ -1,6 +1,8 @@
 // creds to luckydog7
 package handlers.ui;
 
+import handlers.Controls.Control;
+import handlers.HitboxControls.Hitbox;
 import flixel.ui.FlxVirtualPad;
 import flixel.FlxBasic;
 import flixel.FlxCamera;

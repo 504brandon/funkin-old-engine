@@ -1,5 +1,8 @@
 package options;
 
+import sys.io.File;
+import openfl.net.FileReference;
+import openfl.Assets;
 import debug.CharSelect;
 import handlers.MusicBeatState;
 import handlers.ui.Alphabet;
@@ -16,22 +19,11 @@ import states.CharSkin;
 
 class OptionsMain extends MusicBeatState {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
+	var selected:Int = 0;
 
 	#if sys
-	var menuItemsTemp:Array<String> = [
-		'Apperence',
-		'GamePlay',
-		'Modifiers',
-		'Char Skins',
-		'Erase All Data'
-	];
-	var menuItems:Array<String> = [
-		'Apperence',
-		'GamePlay',
-		'Modifiers',
-		'Char Skins',
-		'Erase All Data'
-	];
+	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
+	var menuItems:Array<String> = ['Apperence', 'GamePlay', 'Modifiers', 'Erase All Data'];
 	var apperenceOptions:Array<String> = [
 		'Downscroll',
 		'Middlescroll',
@@ -40,31 +32,20 @@ class OptionsMain extends MusicBeatState {
 		'Animated Icons',
 		'FrameRate'
 	];
+	var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping', 'HitSounds'];
 	#else
-	var menuItemsTemp:Array<String> = [
-		'Apperence', 
-		'GamePlay'
-	];
-	var menuItems:Array<String> = [
-		'Apperence',
-		'GamePlay'
-		];
+	var menuItemsTemp:Array<String> = ['Apperence', 'GamePlay'];
+	var menuItems:Array<String> = ['Apperence', 'GamePlay'];
 	var apperenceOptions:Array<String> = [
-		'Downscroll', 
-		'Middlescroll', 
-		'Opponent strums glow beta', 
-		'Animated Icons', 
-		'Dave and bambi bump', 
+		'Downscroll',
+		'Middlescroll',
+		'Opponent strums glow beta',
+		'Animated Icons',
+		'Dave and bambi bump',
 	];
+	var gameplayOptions:Array<String> = ['Botplay', 'Ghost Tapping'];
 	#end
-	var gameplayOptions:Array<String> = [
-		'Botplay',
-		'Ghost Tapping'
-	];
-	var modifierOptions:Array<String> = [
-		'Fc Mode',
-		'Health Drain'
-	];
+	var modifierOptions:Array<String> = ['Fc Mode', 'Health Drain'];
 	var curSelected:Int = 0;
 
 	var detailsText:FlxText;
@@ -140,8 +121,8 @@ class OptionsMain extends MusicBeatState {
 					regenMenu();
 				}
 
-			case 'Char Skins':
-				FlxG.switchState(new CharSkin());
+				// case 'Char Skins':
+				// FlxG.switchState(new CharSkin());
 			#if sys
 			case 'Erase All Data':
 				detailsText.text = 'Erases all of your save data. WARNING THIS IS UNDOABLE!!!';
@@ -178,12 +159,44 @@ class OptionsMain extends MusicBeatState {
 
 				if (OptionsConfigs.fps > 500)
 					OptionsConfigs.fps = 500;
+
+			case 'HitSounds':
+				detailsText.text = 'Makes a sound when you press a note. ${OptionsConfigs.hitSounds}';
+
+				if (FlxG.keys.justPressed.ENTER)
+					OptionsConfigs.hitSounds = !OptionsConfigs.hitSounds;
+
+				if (OptionsConfigs.hitSounds) {
+					var hitSounds = FileSystem.readDirectory('./assets/sounds/hitsounds');
+					hitSounds.remove('hitsound.txt');
+
+					if (controls.LEFT_R) {
+						selected--;
+
+						if (selected < 0)
+							selected = hitSounds.length - 1;
+
+						File.saveContent('./assets/sounds/hitsounds/hitsound.txt', hitSounds[selected]);
+					}
+
+					if (controls.RIGHT_R) {
+						selected++;
+
+						if (selected > hitSounds.length - 1)
+							selected = 0;
+
+						File.saveContent('./assets/sounds/hitsounds/hitsound.txt', hitSounds[selected]);
+					}
+
+					detailsText.text = 'Makes a sound when you press a note. ${Assets.getText('assets/sounds/hitsounds/hitsound.txt')}';
+				}
 			#end
 			/*case 'Flashing Lights':
 				detailsText.text = 'if disabled, there wont be any flashing lights. ${OptionsConfigs.flashingLights}';
 
 				if (FlxG.keys.justPressed.ENTER)
-					OptionsConfigs.flashingLights = !OptionsConfigs.flashingLights;*/
+					OptionsConfigs.flashingLights = !OptionsConfigs.flashingLights; */
+
 			case 'Middlescroll':
 				detailsText.text = 'Makes the arrows in the middle. ${OptionsConfigs.middlescroll}';
 

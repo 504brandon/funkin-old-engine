@@ -210,6 +210,8 @@ class Character extends FlxSprite {
 				addOffset('deathLoop', 37, 5);
 				addOffset('deathConfirm', 37, 69);
 				addOffset('scared', -4);
+
+				hpColor = 0xFF31B0D1;
 			default:
 				if (Assets.exists('assets/images/characters/$curCharacter/data.json')) {
 					char = loadCharFromJson('data', curCharacter);

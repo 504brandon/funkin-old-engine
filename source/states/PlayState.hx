@@ -1,5 +1,6 @@
 package states;
 
+import openfl.Assets;
 #if sys
 import handlers.HScriptPooger;
 #end
@@ -279,7 +280,7 @@ class PlayState extends MusicBeatState {
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(dad.hpColor, boyfriend.hpColor);
+		healthBar.createGradientBar([dad.hpColor], [boyfriend.hpColor]);
 		// healthBar
 		if (!OptionsConfigs.fc)
 			add(healthBar);
@@ -311,7 +312,7 @@ class PlayState extends MusicBeatState {
 			'songPositionBar', 0, 90000);
 		timeBar.scale.set(0.5, 0.8);
 		timeBar.scrollFactor.set();
-		timeBar.createFilledBar(0xFF000000, dad.hpColor);
+		timeBar.createGradientBar([FlxColor.BLACK], [boyfriend.hpColor, dad.hpColor]);
 		add(timeBar);
 
 		timeText = new FlxText(0, -3);
@@ -659,21 +660,24 @@ class PlayState extends MusicBeatState {
 		else
 			formatMissRatings = missRatings[4];
 
+		//for accuracy - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}%
+
 		if (OptionsConfigs.botplay)
 			scoreText.text = 'BOTPLAY';
 		else if (OptionsConfigs.fc)
-			scoreText.text = 'Score: $songScore - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rateing: $formatMissRatings';
+			scoreText.text = 'Score: $songScore - Combo: $combo - Rateing: $formatMissRatings';
 		else
-			scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${CoolUtil.truncateFloat(health * 50, 1)}% - Accuracy: ${CoolUtil.truncateFloat(songAccuracy, 2)}% - Combo: $combo - Rating: $formatMissRatings';
+			scoreText.text = 'Score: $songScore - Misses: $songMisses - Health: ${CoolUtil.truncateFloat(health * 50, 1)}% - Combo: $combo - Rating: $formatMissRatings';
 
 		scoreText.screenCenter(X);
 		scoreText.updateHitbox();
 
 		if (!startingSong)
-			timeText.text = SONG.song
+			timeText.text = '${SONG.song} - [${storyDifficulty.toUpperCase()}]'
 				+ '\nTime: ${FlxStringUtil.formatTime((FlxG.sound.music.length - Math.max(Conductor.songPosition, 0)) / 1000, false)} / $oldTime';
-		else
-			timeText.text = ${SONG.song} + '\n Time: 0:00 / 0:00';
+		else{
+			timeText.text = '${SONG.song} - [${storyDifficulty.toUpperCase()}]' + '\n Time: 0:00 / 0:00';
+		}
 
 		timeText.screenCenter(X);
 		timeText.updateHitbox();
@@ -939,7 +943,7 @@ class PlayState extends MusicBeatState {
 				StoryMenuState.weekUnlocked[1] = true;
 
 				if (!OptionsConfigs.botplay)
-					Highscore.saveWeekScore(storyWeek, campaignScore);
+					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 
 				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
 				FlxG.save.flush();
@@ -954,7 +958,7 @@ class PlayState extends MusicBeatState {
 			}
 		} else {
 			if (!OptionsConfigs.botplay)
-				Highscore.saveScore(SONG.song, songScore);
+				Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 
 			FlxG.switchState(new FreeplayState());
 		}
@@ -1160,9 +1164,9 @@ class PlayState extends MusicBeatState {
 		}
 
 		playerStrums.forEach(function(spr:FlxSprite) {
-			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm' && !OptionsConfigs.botplay)
 				spr.animation.play('pressed');
-			if (!holdArray[spr.ID])
+			if (!holdArray[spr.ID] && !OptionsConfigs.botplay)
 				spr.animation.play('static');
 
 			if (spr.animation.curAnim.name == 'confirm') {
@@ -1184,6 +1188,26 @@ class PlayState extends MusicBeatState {
 			if (combo > 5) {
 				gf.playAnim('sad');
 			}
+
+			if (combo > 9){
+				var miss:FlxSprite = new FlxSprite();
+				miss.loadGraphic('assets/images/miss.png');
+				miss.screenCenter();
+				miss.x = FlxG.width * 0.55 - 40;
+				miss.y -= 60;
+				miss.acceleration.y = 550;
+				miss.velocity.y -= FlxG.random.int(140, 175);
+				miss.setGraphicSize(Std.int(miss.width * 0.7));
+				miss.updateHitbox();
+				miss.antialiasing = true;
+				miss.velocity.x -= FlxG.random.int(0, 10);
+				add(miss);
+
+				FlxTween.tween(miss, {alpha: 0}, 0.2, {startDelay: Conductor.crochet * 0.001, onComplete: function(tween) {
+					miss.destroy();
+				}});
+			}
+
 			combo = 0;
 
 			songScore -= 10;
@@ -1259,6 +1283,9 @@ class PlayState extends MusicBeatState {
 	function goodNoteHit(note:Note):Void {
 		#if sys
 		script.callFunction('bfNoteHit', [note]);
+
+		if (OptionsConfigs.hitSounds && !note.isSustainNote)
+			FlxG.sound.play('assets/sounds/hitsounds/${Assets.getText('assets/sounds/hitsounds/hitsound.txt')}', 1);
 		#end
 
 		if (!note.isSustainNote) {
@@ -1285,7 +1312,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		playerStrums.forEach(function(spr:FlxSprite) {
-			if (Math.abs(note.noteData) == spr.ID) {
+			if (Math.abs(note.noteData) == spr.ID && !OptionsConfigs.botplay) {
 				spr.animation.play('confirm', true);
 			}
 		});

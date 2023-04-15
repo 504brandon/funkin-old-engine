@@ -19,6 +19,7 @@ class OptionsConfigs
 	public static var downscroll:Bool = false;
 	public static var middlescroll:Bool = false;
 	public static var flashingLights:Bool = true;
+	public static var hitSounds:Bool = false;
 
 	inline public static function verNum():String {
 		var ver:String;
@@ -42,6 +43,7 @@ class OptionsConfigs
 		FlxG.save.data.downscroll = downscroll;
 		FlxG.save.data.middlescroll = middlescroll;
 		FlxG.save.data.flashingLights = flashingLights;
+		FlxG.save.data.hitSounds = hitSounds;
 
         FlxG.save.flush();
 	}
@@ -70,6 +72,8 @@ class OptionsConfigs
 			middlescroll = FlxG.save.data.middlescroll;
 		if (FlxG.save.data.flashingLights != null)
 			flashingLights = FlxG.save.data.flashingLights;
+		if (FlxG.save.data.hitSounds != null)
+			hitSounds = FlxG.save.data.hitSounds;
 
         FlxG.save.flush();
 	}
